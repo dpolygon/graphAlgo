@@ -8,8 +8,9 @@ int main() {
     string file = "ex.dimacs"; 
     COO list{};
     /* construct the coordinate representation 
-    (COO) of the graph from the DIMACS file. */
-    assert(buildCOO(&list, file));  
+        (COO) of the graph from the DIMACS file. */
+    assert(buildCOO(&list, file));
+    // printEdges(list);  
 
     CSR csr{list.nodes, list.edges};
     assert(buildCSR(&csr, list));

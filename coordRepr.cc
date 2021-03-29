@@ -6,9 +6,13 @@ using namespace std;
 /* overriding < operator to sort for src first then dest
 increasing order */
 bool operator< (edge a, edge b) {
-        if (a.src == b.src) {
-            return (a.dest < b.dest);
-        }
+    if (a.src == b.src)
+        if (a.dest == b.dest)
+            return (a.weight > b.weight);
+
+    if (a.src == b.src)
+        return (a.dest < b.dest);
+
     return (a.src < b.src);
 }
 
@@ -39,26 +43,42 @@ bool buildCOO(COO *list, string f) {
     return true;
 }
 
+/* constructs a compressed sparse row 
+    (CSR) of the graph from the DIMACS file.
+    No duplicate coords allowed, coord with 
+    heaviest weight is kept  */
 bool buildCSR(CSR *csr, COO list) {
     int currRow = 0;
+    int lastRow = -1;
+    int lastColumn = -1;
     for(int i = 0; i < list.data.size(); i++) {
         edge currEdge = list.data.at(i);
         int src = currEdge.src;
-        if(currRow != src){
-            csr->rp[src] = i + 1;
-            currRow = src;
+        int dest = currEdge.dest;
+        if(lastRow == src && lastColumn == dest) {
+            // cout << "duplicate detected\n";
+            list.data.erase(list.data.begin() + i);
+            csr->edges = csr->edges - 1;
+            i--;
+        } else {
+            if(currRow != src){
+                csr->rp[src] = i + 1;
+                currRow = src;
+            }
+            lastRow = src;
+            lastColumn = dest;
+            csr->ci[i + 1] = dest;
+            csr->ai[i + 1] = currEdge.weight;
         }
-        csr->ci[i + 1] = currEdge.dest;
-        csr->ai[i + 1] = currEdge.weight;
     }
     return true;
 }
 
 // print vector containing list of graph edges
-void printEdges(vector<edge> csr) {
+void printEdges(COO csr) {
     // iterate over vector
-    for (vector<edge>::iterator it=csr.begin(); it!=csr.end(); ++it)
-        printf("src: %d, dest: %d \n", (*it).src, (*it).dest);
+    for (vector<edge>::iterator it=csr.data.begin(); it!=csr.data.end(); ++it)
+        printf("src: %d, dest: %d, w: %d \n", (*it).src, (*it).dest, (*it).weight);
     cout << '\n';
 }
 

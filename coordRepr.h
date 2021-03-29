@@ -40,7 +40,7 @@ struct CSR {
 bool operator< (edge a, edge b);
 bool buildCOO(COO *list, string f);
 bool buildCSR(CSR *csr, COO list);
-void printEdges(vector<edge> csr);
+void printEdges(COO csr);
 void printCSR(CSR c);
 
 #endif
