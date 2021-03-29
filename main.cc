@@ -1,5 +1,6 @@
 #include <assert.h>
 #include "coordRepr.h"
+#include "system.h"
 
 using namespace std;
 
@@ -15,6 +16,10 @@ int main() {
     CSR csr{list.nodes, list.edges};
     assert(buildCSR(&csr, list));
     printCSR(csr);
+
+    /* takes in name of txt file 
+        to write to and CSR */
+    printAsDimacs("res.txt", csr);
 
     return EXIT_SUCCESS;
 };
