@@ -36,9 +36,12 @@ bool buildCOO(COO *list, string f) {
         list->data.push_back(edge(src, dest, w));
     }
 
+    cout << "finished reading file\n";
     // Sort edges in COO by the source node ID. //
     sort(list->data.begin(), list->data.end());
     // printEdges(data);
+
+    cout << "finished sorting data\n";
 
     return true;
 }
@@ -51,26 +54,27 @@ bool buildCSR(CSR *csr, COO list) {
     int currRow = 0;
     int lastRow = -1;
     int lastColumn = -1;
+    int adjust = 0;
     for(int i = 0; i < list.data.size(); i++) {
         edge currEdge = list.data.at(i);
         int src = currEdge.src;
         int dest = currEdge.dest;
         if(lastRow == src && lastColumn == dest) {
-            // cout << "duplicate detected\n";
-            list.data.erase(list.data.begin() + i);
-            csr->edges = csr->edges - 1;
-            i--;
+            // cout << "duplicate skipped\n";
+            csr->edges--;
+            adjust++;
         } else {
             if(currRow != src){
-                csr->rp[src] = i + 1;
+                csr->rp[src] = i + 1 - adjust;
                 currRow = src;
             }
             lastRow = src;
             lastColumn = dest;
-            csr->ci[i + 1] = dest;
-            csr->ai[i + 1] = currEdge.weight;
+            csr->ci[i + 1 - adjust] = dest;
+            csr->ai[i + 1 - adjust] = currEdge.weight;
         }
     }
+    cout << "CSR is built\n";
     return true;
 }
 
