@@ -24,18 +24,36 @@ bool printNodes(char *f, pageRank p) {
 }
 
 bool pageRankAlgorithm(pageRank *p) {
-    // terminate the page-rank iterations when no node changes its page-rank value by more than 10^-4 between successive iterations
+    
     bool nodeChanged = true;
-    while(nodeChanged) {
-        nodeChanged = false;
+    double dampeningFactor = 0.85;
+    // while(nodeChanged) {
+    //     nodeChanged = false;
+    for(int x = 0; x < 5; x++) {
         for(int i = 1; i < p->size; i++) {
-            // algorithm
+            double juice = p->ranks[i].prevPR;
+            int total = p->ranks[i].outgoingEdges.size();
+            double outJuice;
+            if(total != 0){
+                outJuice = (juice / total) * dampeningFactor;
+            } else {
+                outJuice = 0;
+            }
+            p->ranks[i].currentPR += (1.0 - dampeningFactor);
 
-
-            // check if miniscule change occurred
-            if(p->ranks[i].prevPR - p->ranks[i].currentPR >= 10^-4 || p->ranks[i].currentPR - p->ranks[i].prevPR >= 10^-4)
-                nodeChanged = true;
+            for(int j = 0; j < total; j++) 
+                p->ranks[i].outgoingEdges.at(j)->currentPR += outJuice;
         }
 
+        // terminate the page-rank iterations when no node changes its page-rank value by more than 10^-4 between successive iterations
+        for(int i = 1; i < p->size; i++) {
+            // if(p->ranks[i].prevPR - p->ranks[i].currentPR >= 10^-4 || p->ranks[i].currentPR - p->ranks[i].prevPR >= 10^-4)
+            //         nodeChanged = true;
+
+            p->ranks[i].prevPR = p->ranks[i].currentPR;
+            p->ranks[i].currentPR = 0;
+        }
     }
+
+    return true;
 }

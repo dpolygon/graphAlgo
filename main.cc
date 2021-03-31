@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     // Change filename here to construct CSR for another file
-    string file = "rmat15.dimacs"; 
+    string file = "ex.dimacs"; 
     COO list{};
     /* construct the coordinate representation 
         (COO) of the graph from the DIMACS file. */
@@ -23,6 +23,7 @@ int main() {
     printAsDimacs("res.txt", csr);
 
     pageRank p{csr};
+    pageRankAlgorithm(&p);
     printNodes("res2.txt", p);
 
     return EXIT_SUCCESS;
