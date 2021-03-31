@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     // Change filename here to construct CSR for another file
-    string file = "ex.dimacs"; 
+    string file = "wiki.dimacs"; 
     COO list{};
     /* construct the coordinate representation 
         (COO) of the graph from the DIMACS file. */

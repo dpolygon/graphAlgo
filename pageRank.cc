@@ -27,28 +27,26 @@ bool pageRankAlgorithm(pageRank *p) {
     
     bool nodeChanged = true;
     double dampeningFactor = 0.85;
-    // while(nodeChanged) {
-    //     nodeChanged = false;
-    for(int x = 0; x < 5; x++) {
+    int totalPageRank = 0;
+    while(nodeChanged) {
+        nodeChanged = false;
         for(int i = 1; i < p->size; i++) {
             double juice = p->ranks[i].prevPR;
             int total = p->ranks[i].outgoingEdges.size();
-            double outJuice;
-            if(total != 0){
-                outJuice = (juice / total) * dampeningFactor;
-            } else {
-                outJuice = 0;
-            }
+            double outJuice = total ? (juice / total) * dampeningFactor : 0;
             p->ranks[i].currentPR += (1.0 - dampeningFactor);
+            totalPageRank += (1.0 - dampeningFactor);
 
-            for(int j = 0; j < total; j++) 
+            for(int j = 0; j < total; j++) {
                 p->ranks[i].outgoingEdges.at(j)->currentPR += outJuice;
+                totalPageRank += outJuice;
+            }
         }
 
         // terminate the page-rank iterations when no node changes its page-rank value by more than 10^-4 between successive iterations
         for(int i = 1; i < p->size; i++) {
-            // if(p->ranks[i].prevPR - p->ranks[i].currentPR >= 10^-4 || p->ranks[i].currentPR - p->ranks[i].prevPR >= 10^-4)
-            //         nodeChanged = true;
+            if(p->ranks[i].prevPR - p->ranks[i].currentPR >= 0.0001 || p->ranks[i].currentPR - p->ranks[i].prevPR >= 0.0001)
+                    nodeChanged = true;
 
             p->ranks[i].prevPR = p->ranks[i].currentPR;
             p->ranks[i].currentPR = 0;
