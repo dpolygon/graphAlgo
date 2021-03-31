@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -31,9 +32,9 @@ struct CSR {
     // constructor
     CSR(int n, int e) : nodes(n), edges(e) {
         //dynamically allocating array for node and edge sizes
-        rp = (int *) calloc((nodes + 1), sizeof(*rp));
-        ci = (int *) malloc((edges + 1) * sizeof(*ci));
-        ai = (int *) malloc((edges + 1) * sizeof(*ai));
+        rp = (int *) calloc((nodes + 1), sizeof(int));
+        ci = (int *) malloc((edges + 1) * sizeof(int));
+        ai = (int *) malloc((edges + 1) * sizeof(int));
     }
 };
 

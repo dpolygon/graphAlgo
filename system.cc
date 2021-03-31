@@ -27,6 +27,6 @@ bool printAsDimacs(char *f, CSR c) {
         fprintf(fp, "a %d %d %d\n", row, c.ci[i], c.ai[i]);
         checkIn--;
     }
-
+    cout << "printed Dimacs to " << f << '\n';
     fclose(fp);
 }

@@ -1,12 +1,13 @@
 #include <assert.h>
 #include "coordRepr.h"
+#include "pageRank.h"
 #include "system.h"
 
 using namespace std;
 
 int main() {
     // Change filename here to construct CSR for another file
-    string file = "road-NY.dimacs"; 
+    string file = "rmat15.dimacs"; 
     COO list{};
     /* construct the coordinate representation 
         (COO) of the graph from the DIMACS file. */
@@ -20,6 +21,9 @@ int main() {
     /* takes in name of txt file 
         to write to and CSR */
     printAsDimacs("res.txt", csr);
+
+    pageRank p{csr};
+    printNodes("res2.txt", p);
 
     return EXIT_SUCCESS;
 };
