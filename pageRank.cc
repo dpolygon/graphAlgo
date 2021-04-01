@@ -12,13 +12,16 @@ bool printNodes(char *f, pageRank p) {
     // list or array of page ranks, 
     // where each index represents the node number - 1
     node n;
+    double tot;
     for(int i = 1; i < p.size; i++) {
         n = p.ranks[i];
-        fprintf(fp, "node number: %d   label: %0.9lf ", i, n.prevPR);
+        tot += n.prevPR;
+        fprintf(fp, "node number: %d   label: %0.9lf   outgoing links:", i, n.prevPR);
         for(int i = 0; i < n.outgoingEdges.size(); i++)
             fprintf(fp, " %d", n.outgoingEdges.at(i)->nodeID);
         fprintf(fp, "\n");
     }
+    // fprintf(fp, "%lf\n", tot);
     cout << "printed Nodes to " << f << '\n';
     fclose(fp);
 }
@@ -44,19 +47,16 @@ bool pageRankAlgorithm(pageRank *p) {
     
     bool nodeChanged = true;
     double dampingFactor = 0.85;
-    int totalPageRank = 0;
     while(nodeChanged) {
         nodeChanged = false;
         for(int i = 1; i < p->size; i++) {
             double juice = p->ranks[i].prevPR;
             int total = p->ranks[i].outgoingEdges.size();
             double outJuice = total ? (juice / total) * dampingFactor : 0;
-            p->ranks[i].currentPR += (1.0 - dampingFactor);
-            totalPageRank += (1.0 - dampingFactor) / p->size;
+            p->ranks[i].currentPR += (1.0 - dampingFactor) / p->size;
 
             for(int j = 0; j < total; j++) {
                 p->ranks[i].outgoingEdges.at(j)->currentPR += outJuice;
-                totalPageRank += outJuice;
             }
         }
 
@@ -64,7 +64,7 @@ bool pageRankAlgorithm(pageRank *p) {
         for(int i = 1; i < p->size; i++) {
             if(p->ranks[i].prevPR - p->ranks[i].currentPR >= 0.0001 || p->ranks[i].currentPR - p->ranks[i].prevPR >= 0.0001)
                     nodeChanged = true;
-
+                    
             p->ranks[i].prevPR = p->ranks[i].currentPR;
             p->ranks[i].currentPR = 0;
         }

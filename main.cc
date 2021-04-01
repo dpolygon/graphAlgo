@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     // Change filename here to construct CSR for another file
-    string file = "road-NY.dimacs"; 
+    string file = "wiki.dimacs"; 
     COO list{};
     /* construct the coordinate representation 
         (COO) of the graph from the DIMACS file. */
@@ -16,7 +16,7 @@ int main() {
 
     CSR csr{list.nodes, list.edges};
     assert(buildCSR(&csr, list));
-    // printCSR(csr);
+    printCSR(csr);
 
     /* takes in name of txt file 
         to write to and CSR */
