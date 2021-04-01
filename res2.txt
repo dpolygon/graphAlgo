@@ -1,0 +1,11 @@
+node number: 1   label: 0.304105282 
+node number: 2   label: 3.565480981  3
+node number: 3   label: 3.180579796  2
+node number: 4   label: 0.362600663  1 2
+node number: 5   label: 0.750355282  2 4 6
+node number: 6   label: 0.362600663  2 5
+node number: 7   label: 0.150000000  2 5
+node number: 8   label: 0.150000000  2 5
+node number: 9   label: 0.150000000  2 5
+node number: 10   label: 0.150000000  5
+node number: 11   label: 0.150000000  5
