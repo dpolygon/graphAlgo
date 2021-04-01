@@ -23,19 +23,36 @@ bool printNodes(char *f, pageRank p) {
     fclose(fp);
 }
 
+bool printHistogramData(char *f, pageRank p) {
+    FILE *fp;
+    fp = fopen (f, "w");
+
+    // list or array of page ranks, 
+    // where each index represents the node number - 1
+    node n;
+    fprintf(fp, "%d\n", p.size - 1);
+    for(int i = 1; i < p.size; i++) {
+        n = p.ranks[i];
+        int edges = n.outgoingEdges.size();
+        fprintf(fp, "%d\n", edges);
+    }
+    cout << "printed Histogram Data to " << f << '\n';
+    fclose(fp);
+}
+
 bool pageRankAlgorithm(pageRank *p) {
     
     bool nodeChanged = true;
-    double dampeningFactor = 0.85;
+    double dampingFactor = 0.85;
     int totalPageRank = 0;
     while(nodeChanged) {
         nodeChanged = false;
         for(int i = 1; i < p->size; i++) {
             double juice = p->ranks[i].prevPR;
             int total = p->ranks[i].outgoingEdges.size();
-            double outJuice = total ? (juice / total) * dampeningFactor : 0;
-            p->ranks[i].currentPR += (1.0 - dampeningFactor);
-            totalPageRank += (1.0 - dampeningFactor);
+            double outJuice = total ? (juice / total) * dampingFactor : 0;
+            p->ranks[i].currentPR += (1.0 - dampingFactor);
+            totalPageRank += (1.0 - dampingFactor) / p->size;
 
             for(int j = 0; j < total; j++) {
                 p->ranks[i].outgoingEdges.at(j)->currentPR += outJuice;

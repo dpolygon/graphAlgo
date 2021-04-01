@@ -23,6 +23,7 @@ int main() {
     printAsDimacs("res.txt", csr);
 
     pageRank p{csr};
+    printHistogramData("data.txt", p);
     pageRankAlgorithm(&p);
     printNodes("res2.txt", p);
 

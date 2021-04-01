@@ -64,5 +64,6 @@ struct pageRank {
 
 bool printNodes(char *f, pageRank p);
 bool pageRankAlgorithm(pageRank *p);
+bool printHistogramData(char *f, pageRank p);
 
 #endif
