@@ -16,16 +16,16 @@ int main() {
 
     CSR csr{list.nodes, list.edges};
     assert(buildCSR(&csr, list));
-    printCSR(csr);
+    // printCSR(csr);
 
     /* takes in name of txt file 
         to write to and CSR */
     printAsDimacs("res.txt", csr);
 
     pageRank p{csr};
-    printHistogramData("data.txt", p);
+    // printHistogramData("data.txt", p);
     pageRankAlgorithm(&p);
-    printNodes("res2.txt", p);
+    printNodes("wikiPRRESULTS.txt", p);
 
     return EXIT_SUCCESS;
 };
